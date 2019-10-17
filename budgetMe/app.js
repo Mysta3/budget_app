@@ -2,8 +2,36 @@
 //Budget controller
 var budgetController = (function(){
 
-    //some code
-   
+    var Expense = function(id, description, value){  //function constructor
+        this.id = id,
+        this.description = description,
+        this.value = value;
+    };
+
+    var Income = function(id, description, value){  //function constructor
+        this.id = id,
+        this.description = description,
+        this.value = value;
+    };
+    
+    var data = {
+        allItems:{
+            exp: [],
+            inc: []
+        },
+        totals: {
+            exp: 0,
+            inc: 0
+        }
+    };
+    
+    // return {
+    //     addItem: function(type, des, val){
+    //         var newItem;
+
+    //         newItem new Expense(id, des, val);
+    //     }
+    // };
 })();
 
 
@@ -40,7 +68,18 @@ var UIControler = (function(){
 //Global Controller
 var controller = (function(budgetCtrl, UICtrl){
 
+    var setupEventListeners = function(){
         var DOM = UICtrl.getDOMstrings();
+        document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAdditem);
+        document.addEventListener('keypress', function(event){
+
+            if (event.keyCode == 13 || event.which == 13){
+                ctrlAdditem();
+            }
+        });
+    };
+
+
 
     var ctrlAdditem = function(){
 
@@ -55,17 +94,16 @@ var controller = (function(budgetCtrl, UICtrl){
         // Calc budget 
         //display the budget on UI
 
-    }
-    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAdditem);
- 
-    document.addEventListener('keypress', function(event){
+    };
 
-        if (event.keyCode == 13 || event.which == 13){
-            ctrlAdditem();
+    return {
+        init: function(){
+            console.log("Started");
+            setupEventListeners();
         }
-    })
+    };
 
 })(budgetController, UIControler);
 
-
+controller.init();
 
