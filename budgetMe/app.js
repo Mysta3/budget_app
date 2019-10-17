@@ -5,13 +5,13 @@ var budgetController = (function(){
     var Expense = function(id, description, value){  //function constructor
         this.id = id,
         this.description = description,
-        this.value = value;
+        this.value = value
     };
 
     var Income = function(id, description, value){  //function constructor
         this.id = id,
         this.description = description,
-        this.value = value;
+        this.value = value
     };
     
     var data = {
@@ -52,9 +52,6 @@ var budgetController = (function(){
             
         },
 
-        testing: function(){
-            console.log(data);
-        }
     };
 
 })();
@@ -68,7 +65,9 @@ var UIControler = (function(){
         inputType: '.add__type', 
         inputDescription: '.add__description',
         inputValue: '.add__value',
-        inputBtn: '.add__btn'
+        inputBtn: '.add__btn',
+        expenseContainer: '.expenses__list',
+        incomeContainer: '.income__list'
     };
 
 
@@ -80,6 +79,46 @@ var UIControler = (function(){
                  description:document.querySelector(DOMstrings.inputDescription).value,
                  value: document.querySelector(DOMstrings.inputValue).value        
             };
+        },
+
+        addListItem: function(obj, type){
+          var html, newHtml, element;
+
+            //Create HTML string with placeholder text
+          if (type === 'inc'){
+            element = DOMstrings.incomeContainer;
+
+            html =  '<div class="item clearfix" id="income-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">%value%</div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div> </div> </div>';
+        } else if (type === 'exp'){
+            element = DOMstrings.expenseContainer;
+
+            html = '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">%value%</div> <div class="item__percentage">21%</div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div> </div> </div>';
+          }
+
+           
+          //Replace the placeholder text with some actual dagta
+          newHtml = html.replace('%id%', obj.id);
+          newHtml = newHtml.replace('%description%', obj.description);
+          newHtml = newHtml.replace('%value%', obj.value);
+           
+          
+          //Insert the HTML into the DOM
+          document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+
+        },
+
+        clearFields: function(){
+           var fields, fieldsArray;
+
+           fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+
+           fieldsArray = Array.prototype.slice.call(fields);
+
+           fieldsArray.forEach(function(current, index, array) {
+               current.value = "";
+           });
+
+           fieldsArray[0].focus();
         },
         getDOMstrings: function(){
             return DOMstrings;
@@ -116,6 +155,10 @@ var controller = (function(budgetCtrl, UICtrl){
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
         //Add new item to user Interface
+        UICtrl.addListItem(newItem, input.type);
+
+        //Clear Fields
+        UICtrl.clearFields();
         // Calc budget 
         //display the budget on UI
 
