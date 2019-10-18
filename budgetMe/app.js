@@ -118,7 +118,7 @@ var UIControler = (function(){
                current.value = "";
            });
 
-           fieldsArray[0].focus();
+           fieldsArray[0].focus(); //places focus back on description
         },
         getDOMstrings: function(){
             return DOMstrings;
