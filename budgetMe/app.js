@@ -187,6 +187,13 @@ var UIControler = (function(){
         
     };
 
+                //loop and mutate through percentages array
+                var nodeListForEach = function(list, callback){
+                    for(var i = 0; i < list.length; i++){
+                        callback(list[i], i);
+                    }
+                };
+
 
     return {
         getInput: function(){
@@ -263,13 +270,6 @@ var UIControler = (function(){
             //storing the nodelist
             var fields = document.querySelectorAll(DOMstrings.expensePercentageLabel);
 
-            //loop and mutate through percentages array
-            var nodeListForEach = function(list, callback){
-                for(var i = 0; i < list.length; i++){
-                    callback(list[i], i);
-                }
-            };
-
             nodeListForEach(fields, function(current, index){
 
                 if(percentages[index] > 0){
@@ -278,6 +278,8 @@ var UIControler = (function(){
                     current.textContent = percentages[index] + '--';
                 }
             });
+
+
 
         },
 
@@ -294,6 +296,21 @@ var UIControler = (function(){
 
         },
 
+        changeType: function(){
+
+            var fields = document.querySelectorAll(
+                DOMstrings.inputType + ',' +
+                DOMstrings.inputDescription + ',' +
+                DOMstrings.inputValue
+            );
+            
+            nodeListForEach(fields, function(current){
+                current.classList.toggle('red-focus');
+            });
+            document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
+        },
+
+        
         getDOMstrings: function(){
             return DOMstrings;
         }
@@ -317,6 +334,7 @@ var controller = (function(budgetCtrl, UICtrl){
         });
 
         document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+        document.querySelector(DOM.inputType).addEventListener('change',UICtrl.changeType);
     };
 
     var updateBudget = function(){
